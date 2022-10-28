@@ -83,7 +83,7 @@ export const CairoProvider = ({ children }: PropsWithChildren<{}>) => {
             .reverse(),
           storage: [],
           memory: response.memory
-            .map((byte: BigNumberish) => byte.toString(16))
+            .map((byte: BigNumberish) => byte.toString(16).padStart(2, '0'))
             .join(''),
           programCounter: undefined,
           totalGas: undefined,
