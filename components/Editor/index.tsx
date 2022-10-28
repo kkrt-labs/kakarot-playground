@@ -64,9 +64,6 @@ const Editor = ({ readOnly = false }: Props) => {
     loadInstructions,
     startExecution,
     startTransaction,
-    deployedContractAddress,
-    vmError,
-    selectedFork,
     opcodes,
     instructions,
     resetExecution,
@@ -118,18 +115,12 @@ const Editor = ({ readOnly = false }: Props) => {
         setIsCompiling(false)
       }
     },
-    [
-      transactionData,
-      getCallValue,
-      loadInstructions,
-      startTransaction,
-      codeType,
-    ],
+    [transactionData, getCallValue, loadInstructions, startTransaction],
   )
 
   const handleWorkerMessage = useCallback(
     (event: MessageEvent) => {
-      const { warning, error, contracts } = event.data
+      const { error, contracts } = event.data
       resetExecution()
 
       if (error) {
@@ -148,7 +139,7 @@ const Editor = ({ readOnly = false }: Props) => {
         setIsCompiling(false)
       }
     },
-    [resetExecution, codeType, isExpanded, deployByteCode],
+    [resetExecution, isExpanded, deployByteCode],
   )
 
   useEffect(() => {
@@ -241,12 +232,11 @@ const Editor = ({ readOnly = false }: Props) => {
     }
   }
 
-  const startExecutions = (byteCode: string, value: bigint, data: string) => {
-    startExecution(byteCode, value, data)
-    cairoContext.startExecution(byteCode, value, data)
-  }
-
   const handleRun = useCallback(() => {
+    const startExecutions = (byteCode: string, value: bigint, data: string) => {
+      startExecution(byteCode, value, data)
+      cairoContext.startExecution(byteCode, value, data)
+    }
     if (!isEmpty(callValue) && !/^[0-9]+$/.test(callValue)) {
       return
     }
@@ -273,17 +263,19 @@ const Editor = ({ readOnly = false }: Props) => {
         loadInstructions(code)
         startExecutions(code, _callValue, _callData)
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error)
+    }
   }, [
     code,
     codeType,
     opcodes,
-    selectedFork,
     callData,
     callValue,
     loadInstructions,
-    startExecution,
     getCallValue,
+    startExecution,
+    cairoContext,
   ])
 
   const isRunDisabled = useMemo(() => {
