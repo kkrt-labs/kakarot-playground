@@ -532,7 +532,7 @@ export const EthereumProvider: React.FC<{}> = ({ children }) => {
   // respectively AFTER applying the original methods.
   // This is necessary in order to handle storage operations easily.
   const _setupStateManager = () => {
-    var proxyStateManager = traceMethodCalls(vm.evm.eei)
+    const proxyStateManager = traceMethodCalls(vm.evm.eei)
     vm.evm.eei.putContractStorage = proxyStateManager.putContractStorage
     vm.evm.eei.clearContractStorage = proxyStateManager.clearContractStorage
 

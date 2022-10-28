@@ -2,10 +2,11 @@ import { useContext } from 'react'
 
 import cn from 'classnames'
 
+import { CairoContext } from 'context/cairoContext'
+
 import { toKeyIndex } from 'util/string'
 
 import { StackBox } from 'components/ui'
-import { CairoContext } from 'context/cairoContext'
 
 type RowProps = {
   label: string

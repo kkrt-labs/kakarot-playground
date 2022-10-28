@@ -5,12 +5,12 @@ import Link from 'next/link'
 
 import { GITHUB_REPO_URL } from 'util/constants'
 
+import ConnectButton from 'components/ConnectButton'
 import KBarButton from 'components/KBar/Button'
 import NavLink from 'components/NavLink'
 import ThemeSelector from 'components/ThemeSelector'
 import { Container, Hamburger, Logo } from 'components/ui'
 
-import ConnectButton from 'components/ConnectButton'
 import ChainSelector from '../ChainSelector'
 
 const Nav = () => {
