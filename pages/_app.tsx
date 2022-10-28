@@ -7,12 +7,12 @@ import PlausibleProvider from 'next-plausible'
 import { ThemeProvider } from 'next-themes'
 import type { AppProps } from 'next/app'
 
+import { CairoProvider } from 'context/cairoContext'
 import { EthereumProvider } from 'context/ethereumContext'
 import { SettingsProvider } from 'context/settingsContext'
 
 import KBar from 'components/KBar'
 
-import { CairoProvider } from 'context/cairoContext'
 import '../styles/globals.css'
 import '../styles/highlight/atom-one-dark.css'
 import '../styles/highlight/atom-one-light.css'
