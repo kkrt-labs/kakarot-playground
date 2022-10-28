@@ -1,8 +1,10 @@
-import { Button } from 'components/ui'
-import { CairoContext } from 'context/cairoContext'
+import { useContext } from 'react'
 
 import { disconnect, getStarknet } from 'get-starknet'
-import { useContext } from 'react'
+
+import { CairoContext } from 'context/cairoContext'
+
+import { Button } from 'components/ui'
 
 const ConnectButton = () => {
   const { accountAddress, setAccountAddress } = useContext(CairoContext)

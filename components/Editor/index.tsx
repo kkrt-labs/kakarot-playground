@@ -18,6 +18,7 @@ import { useRouter } from 'next/router'
 import Select, { OnChangeValue } from 'react-select'
 import SCEditor from 'react-simple-code-editor'
 
+import { CairoContext } from 'context/cairoContext'
 import { EthereumContext } from 'context/ethereumContext'
 import { Setting, SettingsContext } from 'context/settingsContext'
 
@@ -40,7 +41,6 @@ import examples from 'components/Editor/examples'
 import InstructionList from 'components/Editor/Instructions'
 import { Button, Icon, Input } from 'components/ui'
 
-import { CairoContext } from 'context/cairoContext'
 import CairoExecutionState from './CairoExecutionState'
 import ExecutionState from './ExecutionState'
 import ExecutionStatus from './ExecutionStatus'
