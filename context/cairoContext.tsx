@@ -28,7 +28,7 @@ const initialExecutionState = {
 }
 
 const KAKAROT_ADDRESS =
-  '0x020b957e916832e4c67c3dee55d9e32740215d39cd8eb9ef569f33ea25731043'
+  '0x05f2d38bc1909a188cf950e903a6e28db912dd11920369f64cb31540f050b1f2'
 
 export const CairoContext = React.createContext<ContextProps>({
   accountAddress: '',
