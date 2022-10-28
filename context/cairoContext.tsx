@@ -75,7 +75,6 @@ export const CairoProvider = ({ children }: PropsWithChildren<{}>) => {
   ) => {
     contract?.functions['execute'](hex2bytes(byteCode), hex2bytes(data)).then(
       (response) => {
-        console.log(response)
         setExecutionState({
           stack: response.stack
             .map(uint256ToBN)
@@ -83,7 +82,7 @@ export const CairoProvider = ({ children }: PropsWithChildren<{}>) => {
             .reverse(),
           storage: [],
           memory: response.memory
-            .map((byte: BigNumberish) => byte.toString(16))
+            .map((byte: BigNumberish) => byte.toString(16).padStart(2, '0'))
             .join(''),
           programCounter: undefined,
           totalGas: undefined,
