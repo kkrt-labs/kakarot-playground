@@ -1,14 +1,15 @@
 import { ExampleCode } from './types'
 
 const examples: ExampleCode = {
-  Bytecode: ['604260005260206000F3'],
+  Bytecode: ['6010600052601160002000'],
   Mnemonic: [
-    `PUSH1 0x42
-PUSH1 0
+    `PUSH1 10
+PUSH1 00
 MSTORE
-PUSH1 32
-PUSH1 0
-RETURN`,
+PUSH1 11
+PUSH1 00
+SHA3
+STOP`,
   ],
 }
 

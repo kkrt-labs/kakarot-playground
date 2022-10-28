@@ -75,7 +75,6 @@ export const CairoProvider = ({ children }: PropsWithChildren<{}>) => {
   ) => {
     contract?.functions['execute'](hex2bytes(byteCode), hex2bytes(data)).then(
       (response) => {
-        console.log(response)
         setExecutionState({
           stack: response.stack
             .map(uint256ToBN)
