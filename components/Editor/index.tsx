@@ -83,6 +83,7 @@ const Editor = ({ readOnly = false }: Props) => {
   const [unit, setUnit] = useState(ValueUnit.Wei as string)
 
   const [isExpanded, setIsExpanded] = useState(false)
+  const [isDeployDisabled, setIsDeployDisabled] = useState(false)
 
   const getCallValue = useCallback(() => {
     const _callValue = BigInt(callValue)
@@ -279,6 +280,56 @@ const Editor = ({ readOnly = false }: Props) => {
     cairoContext,
   ])
 
+  const handleDeploy = useCallback(() => {
+    const deploy = async (byteCode: string) => {
+      await cairoContext.deployEvmContract(byteCode)
+      setIsDeployDisabled(true)
+    }
+
+    try {
+      if (codeType === CodeType.Mnemonic) {
+        const bytecode = getBytecodeFromMnemonic(code, opcodes)
+        deploy(bytecode)
+      } else {
+        if (code.length % 2 !== 0) {
+          return
+        }
+        if (!isHex(code)) {
+          return
+        }
+        deploy(code)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }, [code, codeType, opcodes, cairoContext])
+
+  const handleExecuteAtAddress = useCallback(() => {
+    const executeAtAddress = (
+      evmContractAddress: string,
+      value: bigint,
+      data: string,
+    ) => {
+      cairoContext.executeAtAddress(evmContractAddress, data, value)
+    }
+    if (!isEmpty(callValue) && !/^[0-9]+$/.test(callValue)) {
+      return
+    }
+
+    if (!isEmpty(callData) && !isFullHex(callData)) {
+      return
+    }
+
+    try {
+      const _callData = callData.substr(2)
+      const _callValue = getCallValue()
+
+      executeAtAddress(cairoContext.evmContractAddress, _callValue, _callData)
+    } catch (error) {
+      console.error(error)
+    }
+  }, [callData, callValue, getCallValue, cairoContext])
+
   const isRunDisabled = useMemo(() => {
     return compiling || isEmpty(code)
   }, [compiling, code])
@@ -361,7 +412,7 @@ const Editor = ({ readOnly = false }: Props) => {
                     />
                   </div>
 
-                  <div>
+                  <div className="flex flex-col md:w-28 sm:w-16 gap-2">
                     <Button
                       onClick={handleRun}
                       disabled={isRunDisabled}
@@ -369,6 +420,20 @@ const Editor = ({ readOnly = false }: Props) => {
                       contentClassName="justify-center"
                     >
                       Run
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        if (!isRunDisabled) {
+                          handleDeploy()
+                        }
+                        if (isRunDisabled) {
+                          handleExecuteAtAddress()
+                        }
+                      }}
+                      size="sm"
+                      contentClassName="justify-center"
+                    >
+                      {isDeployDisabled ? 'Execute Contract' : 'Deploy'}
                     </Button>
                   </div>
                 </div>
