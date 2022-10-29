@@ -7,7 +7,8 @@ import { CairoContext } from 'context/cairoContext'
 import { Button } from 'components/ui'
 
 const ConnectButton = () => {
-  const { accountAddress, setAccountAddress } = useContext(CairoContext)
+  const { accountAddress, setAccountAddress, contract } =
+    useContext(CairoContext)
 
   const onClick = async () => {
     if (getStarknet().isConnected) {
@@ -15,6 +16,9 @@ const ConnectButton = () => {
     }
     const selected = await getStarknet().enable({ showModal: true })
     setAccountAddress(selected[0])
+    if (getStarknet().isConnected) {
+      contract?.connect(getStarknet().account)
+    }
   }
 
   return (
