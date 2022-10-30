@@ -423,17 +423,21 @@ const Editor = ({ readOnly = false }: Props) => {
                     </Button>
                     <Button
                       onClick={() => {
-                        if (!isRunDisabled) {
-                          handleDeploy()
-                        }
-                        if (isRunDisabled) {
-                          handleExecuteAtAddress()
-                        }
+                        handleDeploy()
                       }}
                       size="sm"
                       contentClassName="justify-center"
                     >
-                      {isDeployDisabled ? 'Execute Contract' : 'Deploy'}
+                      Deploy
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        handleExecuteAtAddress()
+                      }}
+                      size="sm"
+                      contentClassName="justify-center"
+                    >
+                      Execute Contract
                     </Button>
                   </div>
                 </div>

@@ -7,7 +7,7 @@ import { uint256ToBN } from 'starknet/dist/utils/uint256'
 import { IExecutionState } from 'types'
 
 export const starknetSequencerProvider = new Provider({
-  baseUrl: 'http://54.194.247.225:5050',
+  baseUrl: process.env.NEXT_PUBLIC_DEVNET_URL ?? '',
 })
 
 type ContextProps = {
@@ -37,7 +37,7 @@ const initialExecutionState = {
 }
 
 const KAKAROT_ADDRESS =
-  '0x00ee9d8104feedb4d853b0ec970ac5f4442343b5f0d6fc5818943f307ba50db9'
+  '0x037726315e27bfc247a6e49ff1446c708f1ab26002b033e369bcb0a16f3466a9'
 
 export const CairoContext = React.createContext<ContextProps>({
   accountAddress: '',
@@ -48,7 +48,7 @@ export const CairoContext = React.createContext<ContextProps>({
   deployEvmContract: () => undefined,
   executeAtAddress: () => undefined,
   contract: undefined,
-  evmContractAddress: '',
+  evmContractAddress: '0xabde1007aaf8fbb025c61d6406f78916c402012a',
   setEvmContractAddress: () => undefined,
 })
 
@@ -121,9 +121,45 @@ export const CairoProvider = ({ children }: PropsWithChildren<{}>) => {
     value: bigint,
   ) => {
     console.log(value)
+    console.log(contract?.address)
     const response = await contract?.functions['execute_at_address'](
-      hex2bytes(_evmContractAddress),
-      hex2bytes(callData),
+      _evmContractAddress,
+      [
+        '981189583650763387336814028980797387970632089898',
+        '32',
+        '55',
+        '19',
+        '3',
+        '192',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+        '0',
+      ],
     )
     return response.transaction_hash
   }
