@@ -48,7 +48,7 @@ export const CairoContext = React.createContext<ContextProps>({
   deployEvmContract: () => undefined,
   executeAtAddress: () => undefined,
   contract: undefined,
-  evmContractAddress: '0xabde1007aaf8fbb025c61d6406f78916c402012a',
+  evmContractAddress: '0xabde1007d9fa45e4e66aaf1af1b7c9ad3b09f06f',
   setEvmContractAddress: () => undefined,
 })
 
@@ -63,7 +63,9 @@ export const CairoProvider = ({ children }: PropsWithChildren<{}>) => {
 
   const [contract, setContract] = useState<Contract>()
 
-  const [evmContractAddress, setEvmContractAddress] = useState<string>('')
+  const [evmContractAddress, setEvmContractAddress] = useState<string>(
+    '0xabde1007d9fa45e4e66aaf1af1b7c9ad3b09f06f',
+  )
 
   useEffect(() => {
     starknetSequencerProvider.getCode(KAKAROT_ADDRESS).then((response) => {
@@ -124,43 +126,30 @@ export const CairoProvider = ({ children }: PropsWithChildren<{}>) => {
     console.log(contract?.address)
     const response = await contract?.functions['execute_at_address'](
       _evmContractAddress,
-      [
-        '981189583650763387336814028980797387970632089898',
-        '32',
-        '55',
-        '19',
-        '3',
-        '192',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-        '0',
-      ],
+      hex2bytes(callData),
     )
+    const trace = await starknetSequencerProvider.getTransactionTrace(
+      response?.transaction_hash,
+    )
+    const result = trace.function_invocation.result
+    const stack = result.slice(1, parseInt(result[0], 16) * 2 + 1)
+    const memory = result.slice(
+      parseInt(result[0], 16) * 2 + 1,
+      result.length - 1,
+    )
+    console.log(stack)
+    console.log(memory)
+    setExecutionState({
+      stack: stack[0],
+      storage: [],
+      memory: memory
+        .map((hexString: string) => hexString.padStart(2, '0'))
+        .join(''),
+      programCounter: undefined,
+      totalGas: undefined,
+      currentGas: undefined,
+      returnValue: undefined,
+    })
     return response.transaction_hash
   }
 
