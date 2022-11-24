@@ -9,14 +9,14 @@ const Footer = () => {
         <div className="flex justify-between text-tiny text-gray-500 items-start">
           <div className="flex flex-col md:flex-row leading-6">
             <span>
-              Brought to you by{' '}
+              Forked with love from{' '}
               <a
                 className="underline font-medium"
-                href="https://smlxl.io"
+                href="https://evm.codes"
                 target="_blank"
                 rel="noreferrer"
               >
-                smlXL, Inc
+                evm.codes
               </a>
               .
             </span>

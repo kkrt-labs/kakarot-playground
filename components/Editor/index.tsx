@@ -234,7 +234,7 @@ const Editor = ({ readOnly = false }: Props) => {
     }
   }
 
-  const handleRun = useCallback(() => {
+  const handleExecute = useCallback(() => {
     const startExecutions = (byteCode: string, value: bigint, data: string) => {
       startExecution(byteCode, value, data)
       cairoContext.startExecution(byteCode, value, data)
@@ -415,12 +415,12 @@ const Editor = ({ readOnly = false }: Props) => {
 
                   <div className="flex flex-col md:w-28 sm:w-16 gap-2">
                     <Button
-                      onClick={handleRun}
+                      onClick={handleExecute}
                       disabled={isRunDisabled}
                       size="sm"
                       contentClassName="justify-center"
                     >
-                      Run
+                      Execute
                     </Button>
                     <Button
                       onClick={() => {
