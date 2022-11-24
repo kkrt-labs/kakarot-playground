@@ -3,8 +3,6 @@ import { useState } from 'react'
 import cn from 'classnames'
 import Link from 'next/link'
 
-import { GITHUB_REPO_URL } from 'util/constants'
-
 import ConnectButton from 'components/ConnectButton'
 import KBarButton from 'components/KBar/Button'
 import NavLink from 'components/NavLink'
@@ -28,7 +26,7 @@ const Nav = () => {
 
           <ul
             className={cn(
-              'py-2 md:py-0 px-2 flex justify-between items-start md:items-center flex-col md:flex-row w-full md:w-auto fixed md:static shadow-md md:shadow-none transition-all',
+              'py-2 md:py-0 px-12 flex justify-between items-start md:items-center flex-col md:flex-row w-full md:w-auto fixed md:static shadow-md md:shadow-none transition-all',
               {
                 'left-0 bg-white dark:bg-black-800 md:bg-transparent dark:md:bg-transparent':
                   isMenuVisible,
@@ -37,13 +35,8 @@ const Nav = () => {
             )}
             style={{ top: 56 }}
           >
-            <NavLink href="/">Opcodes</NavLink>
-            <NavLink href="/precompiled">Precompiled Contracts</NavLink>
-            <NavLink href="/playground">Playground</NavLink>
+            <NavLink href="/opcodes">Opcodes</NavLink>
             <NavLink href="/about">About the EVM</NavLink>
-            <NavLink href={GITHUB_REPO_URL} external>
-              GitHub
-            </NavLink>
 
             <li className="hidden lg:inline-block">
               <KBarButton />

@@ -9,14 +9,24 @@ const useActions = () => {
 
   return [
     {
+      id: 'playground',
+      name: 'Playground',
+      shortcut: ['p'],
+      keywords: 'editor play',
+      section: 'Navigation',
+      perform: () => router.push('/'),
+      subtitle: 'Play with EVM in real-time',
+      icon: <Icon name="home-2-line" />,
+    },
+    {
       id: 'opcodes',
       name: 'Opcodes',
       shortcut: ['o'],
       keywords: 'home opcodes back',
       section: 'Navigation',
-      perform: () => router.push('/'),
+      perform: () => router.push('/opcodes'),
       subtitle: 'Opcodes reference',
-      icon: <Icon name="home-2-line" />,
+      icon: <Icon name="play-circle-line" />,
     },
     {
       id: 'precompiled',
@@ -27,16 +37,6 @@ const useActions = () => {
       subtitle: 'Precompiled contracts reference',
       perform: () => router.push('/precompiled'),
       icon: <Icon name="information-line" />,
-    },
-    {
-      id: 'playground',
-      name: 'Playground',
-      shortcut: ['p'],
-      keywords: 'editor play',
-      section: 'Navigation',
-      perform: () => router.push('/playground'),
-      subtitle: 'Play with EVM in real-time',
-      icon: <Icon name="play-circle-line" />,
     },
     {
       id: 'about',
