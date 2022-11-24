@@ -7,7 +7,7 @@ import { uint256ToBN } from 'starknet/dist/utils/uint256'
 import { IExecutionState } from 'types'
 
 export const starknetSequencerProvider = new Provider({
-  baseUrl: process.env.NEXT_PUBLIC_DEVNET_URL ?? '',
+  baseUrl: 'https://alpha4-2.starknet.io',
 })
 
 type ContextProps = {
@@ -37,7 +37,7 @@ const initialExecutionState = {
 }
 
 const KAKAROT_ADDRESS =
-  '0x037726315e27bfc247a6e49ff1446c708f1ab26002b033e369bcb0a16f3466a9'
+  '0x031ddf73d0285cc2f08bd4a2c93229f595f2f6e64b25846fc0957a2faa7ef7bb'
 
 export const CairoContext = React.createContext<ContextProps>({
   accountAddress: '',
@@ -48,7 +48,7 @@ export const CairoContext = React.createContext<ContextProps>({
   deployEvmContract: () => undefined,
   executeAtAddress: () => undefined,
   contract: undefined,
-  evmContractAddress: '0xabde1007d9fa45e4e66aaf1af1b7c9ad3b09f06f',
+  evmContractAddress: '',
   setEvmContractAddress: () => undefined,
 })
 
@@ -63,9 +63,7 @@ export const CairoProvider = ({ children }: PropsWithChildren<{}>) => {
 
   const [contract, setContract] = useState<Contract>()
 
-  const [evmContractAddress, setEvmContractAddress] = useState<string>(
-    '0xabde1007d9fa45e4e66aaf1af1b7c9ad3b09f06f',
-  )
+  const [evmContractAddress, setEvmContractAddress] = useState<string>('')
 
   useEffect(() => {
     starknetSequencerProvider.getCode(KAKAROT_ADDRESS).then((response) => {
@@ -93,24 +91,27 @@ export const CairoProvider = ({ children }: PropsWithChildren<{}>) => {
     value: bigint,
     data: string,
   ) => {
-    contract?.functions['execute'](hex2bytes(byteCode), hex2bytes(data)).then(
-      (response) => {
-        setExecutionState({
-          stack: response.stack
-            .map(uint256ToBN)
-            .map((n: BigNumberish) => n.toString(16))
-            .reverse(),
-          storage: [],
-          memory: response.memory
-            .map((byte: BigNumberish) => byte.toString(16).padStart(2, '0'))
-            .join(''),
-          programCounter: undefined,
-          totalGas: undefined,
-          currentGas: undefined,
-          returnValue: undefined,
-        })
-      },
-    )
+    contract?.functions['execute'](
+      // TODO: remove hardcoded zero value in execute call context
+      0,
+      hex2bytes(byteCode),
+      hex2bytes(data),
+    ).then((response) => {
+      setExecutionState({
+        stack: response.stack
+          .map(uint256ToBN)
+          .map((n: BigNumberish) => n.toString(16))
+          .reverse(),
+        storage: [],
+        memory: response.memory
+          .map((byte: BigNumberish) => byte.toString(16).padStart(2, '0'))
+          .join(''),
+        programCounter: undefined,
+        totalGas: undefined,
+        currentGas: undefined,
+        returnValue: undefined,
+      })
+    })
   }
 
   const deployEvmContract = async (byteCode: string) => {
@@ -126,6 +127,8 @@ export const CairoProvider = ({ children }: PropsWithChildren<{}>) => {
     console.log(contract?.address)
     const response = await contract?.functions['execute_at_address'](
       _evmContractAddress,
+      // TODO: remove hardcoded zero value in execute call context
+      0,
       hex2bytes(callData),
     )
     const trace = await starknetSequencerProvider.getTransactionTrace(

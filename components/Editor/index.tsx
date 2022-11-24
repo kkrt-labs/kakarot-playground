@@ -304,31 +304,32 @@ const Editor = ({ readOnly = false }: Props) => {
     }
   }, [code, codeType, opcodes, cairoContext])
 
-  const handleExecuteAtAddress = useCallback(() => {
-    const executeAtAddress = (
-      evmContractAddress: string,
-      value: bigint,
-      data: string,
-    ) => {
-      cairoContext.executeAtAddress(evmContractAddress, data, value)
-    }
-    if (!isEmpty(callValue) && !/^[0-9]+$/.test(callValue)) {
-      return
-    }
+  // TODO: Display button and handler to allow interaction with EVM contracts deployed through Kakarot
+  // const handleExecuteAtAddress = useCallback(() => {
+  //   const executeAtAddress = (
+  //     evmContractAddress: string,
+  //     value: bigint,
+  //     data: string,
+  //   ) => {
+  //     cairoContext.executeAtAddress(evmContractAddress, data, value)
+  //   }
+  //   if (!isEmpty(callValue) && !/^[0-9]+$/.test(callValue)) {
+  //     return
+  //   }
 
-    if (!isEmpty(callData) && !isFullHex(callData)) {
-      return
-    }
+  //   if (!isEmpty(callData) && !isFullHex(callData)) {
+  //     return
+  //   }
 
-    try {
-      const _callData = callData.substr(2)
-      const _callValue = getCallValue()
+  //   try {
+  //     const _callData = callData.substr(2)
+  //     const _callValue = getCallValue()
 
-      executeAtAddress(cairoContext.evmContractAddress, _callValue, _callData)
-    } catch (error) {
-      console.error(error)
-    }
-  }, [callData, callValue, getCallValue, cairoContext])
+  //     executeAtAddress(cairoContext.evmContractAddress, _callValue, _callData)
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  // }, [callData, callValue, getCallValue, cairoContext])
 
   const isRunDisabled = useMemo(() => {
     return compiling || isEmpty(code)
@@ -427,10 +428,12 @@ const Editor = ({ readOnly = false }: Props) => {
                       }}
                       size="sm"
                       contentClassName="justify-center"
+                      disabled={isDeployDisabled}
                     >
                       Deploy
                     </Button>
-                    <Button
+                    {/* TODO: Display this button to allow interaction with EVM contracts deployed through Kakarot
+                     <Button
                       onClick={() => {
                         handleExecuteAtAddress()
                       }}
@@ -438,7 +441,7 @@ const Editor = ({ readOnly = false }: Props) => {
                       contentClassName="justify-center"
                     >
                       Execute Contract
-                    </Button>
+                    </Button> */}
                   </div>
                 </div>
               }
