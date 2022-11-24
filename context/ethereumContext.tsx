@@ -138,6 +138,7 @@ export const EthereumProvider: React.FC<{}> = ({ children }) => {
   >()
   const [vmError, setVmError] = useState<string | undefined>()
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   const nextStepFunction = useRef<Function>()
   const isExecutionPaused = useRef(true)
   const breakpointIds = useRef<number[]>([])
@@ -509,6 +510,7 @@ export const EthereumProvider: React.FC<{}> = ({ children }) => {
 
   function traceMethodCalls(obj: any) {
     const handler = {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       get(target: any, propKey: any, receiver: any) {
         const origMethod = target[propKey]
         return (...args: any[]) => {

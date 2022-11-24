@@ -83,6 +83,7 @@ const Editor = ({ readOnly = false }: Props) => {
   const [unit, setUnit] = useState(ValueUnit.Wei as string)
 
   const [isExpanded, setIsExpanded] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isDeployDisabled, setIsDeployDisabled] = useState(false)
 
   const getCallValue = useCallback(() => {
