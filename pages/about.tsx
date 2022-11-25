@@ -24,7 +24,7 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({
       <html lang="en"></html>
       <React.Fragment>
         <Head>
-          <title> EVM Codes - About the EVM </title>
+          <title> Kakarot Playground - About the EVM </title>
         </Head>
         <meta
           property="og:description"

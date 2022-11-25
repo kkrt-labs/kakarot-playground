@@ -4,9 +4,9 @@ import ethereumLogo from 'public/ethereum_logo.png'
 export const Logo: React.FC = () => {
   return (
     <div className="flex items-center text-lg font-semibold w-32 tracking-tight text-gray-900 dark:text-white">
-      <span style={{ paddingRight: '2px' }}>evm</span>
+      <span style={{ paddingRight: '2px' }}>kakarot</span>
       <Image src={ethereumLogo} width={20} height={20} />
-      <span style={{ paddingLeft: '2px' }}>codes</span>
+      <span style={{ paddingLeft: '2px' }}>playground</span>
     </div>
   )
 }
