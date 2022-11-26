@@ -92,8 +92,9 @@ export const CairoProvider = ({ children }: PropsWithChildren<{}>) => {
     data: string,
   ) => {
     contract?.functions['execute'](
-      // TODO: remove hardcoded zero value in execute call context
-      0,
+      // TODO: use toFelt() method from starknet.js once bigint is supported
+      // see https://github.com/0xs34n/starknet.js/pull/399
+      value.toString(),
       hex2bytes(byteCode),
       hex2bytes(data),
     ).then((response) => {
@@ -127,8 +128,9 @@ export const CairoProvider = ({ children }: PropsWithChildren<{}>) => {
     console.log(contract?.address)
     const response = await contract?.functions['execute_at_address'](
       _evmContractAddress,
-      // TODO: remove hardcoded zero value in execute call context
-      0,
+      // TODO: use toFelt() method from starknet.js once bigint is supported
+      // see https://github.com/0xs34n/starknet.js/pull/399
+      value.toString(),
       hex2bytes(callData),
     )
     const trace = await starknetSequencerProvider.getTransactionTrace(
