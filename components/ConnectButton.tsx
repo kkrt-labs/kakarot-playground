@@ -6,7 +6,19 @@ import { CairoContext } from 'context/cairoContext'
 
 import { Button } from 'components/ui'
 
-const ConnectButton = () => {
+interface Props {
+  size?: 'xs' | 'sm' | 'md' | undefined
+  className?: string
+}
+
+const parseAddres = (accountAddress: string) => {
+  return (
+    accountAddress.substring(0, 6) +
+    '...' +
+    accountAddress.substring(accountAddress.length - 4, accountAddress.length)
+  )
+}
+const ConnectButton = ({ ...props }: Props) => {
   const { accountAddress, setAccountAddress, contract } =
     useContext(CairoContext)
 
@@ -25,12 +37,10 @@ const ConnectButton = () => {
     <Button
       size="xs"
       onClick={onClick}
-      className="mx-4 py-1 px-2 font-medium"
-      transparent
-      outline
-      padded={false}
+      className="mx-0 py-1 px-2 font-medium"
+      {...props}
     >
-      {accountAddress ? accountAddress.substring(0, 8) : 'Connect'}
+      {accountAddress ? parseAddres(accountAddress) : 'Connect'}
     </Button>
   )
 }

@@ -37,6 +37,7 @@ const Nav = () => {
           >
             <NavLink href="/opcodes">Opcodes</NavLink>
             <NavLink href="/about">About the EVM</NavLink>
+            <NavLink href="/deploy">Deploy from L1</NavLink>
 
             <li className="hidden lg:inline-block">
               <KBarButton />
@@ -44,7 +45,7 @@ const Nav = () => {
           </ul>
 
           <div className="items-center ml-auto flex">
-            <ConnectButton />
+            <ConnectButton className="mx-4" />
             <ChainSelector />
             <ThemeSelector />
           </div>
