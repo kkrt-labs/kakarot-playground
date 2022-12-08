@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { ethers } from 'ethers'
 import type { NextPage } from 'next'
@@ -9,6 +9,7 @@ import HomeLayout from 'components/layouts/Home'
 import { Button, Container, H1, H2, H3, Icon, Input } from 'components/ui'
 
 import ConnectButton from '../components/ConnectButton'
+import { CairoContext } from '../context/cairoContext'
 import { fetchABI, fetchBytecode } from '../services/api.service'
 
 type SectionWrapperProps = {
@@ -77,6 +78,7 @@ const AboutPage = () => {
   const [abi, setAbi] = useState<string>()
   const [isAddressValid, setAddressValid] = useState<boolean>(false)
   const [isDeployed, setDeployed] = useState<boolean>(false)
+  const { deployEvmContract } = useContext(CairoContext)
 
   useEffect(() => {
     const isValid: boolean = contractAddress
@@ -95,7 +97,15 @@ const AboutPage = () => {
   }
 
   const deployToKakarot = () => {
-
+    if (byteCode) {
+      deployEvmContract(byteCode)
+        ?.then((result) => {
+          console.log(result)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
   }
 
   return (
