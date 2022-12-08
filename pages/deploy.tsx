@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
+import { ethers } from 'ethers'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import ReactTooltip from 'react-tooltip'
@@ -8,6 +9,7 @@ import HomeLayout from 'components/layouts/Home'
 import { Button, Container, H1, H2, H3, Icon, Input } from 'components/ui'
 
 import ConnectButton from '../components/ConnectButton'
+import { fetchABI, fetchBytecode } from '../services/api.service'
 
 type SectionWrapperProps = {
   nbr: React.ReactNode
@@ -70,6 +72,32 @@ const InfoBox: React.FC<InfoBoxProps> = ({ children, title, statusIcon }) => {
 }
 
 const AboutPage = () => {
+  const [contractAddress, setContractAddress] = useState<string>()
+  const [byteCode, setBytecode] = useState<string>()
+  const [abi, setAbi] = useState<string>()
+  const [isAddressValid, setAddressValid] = useState<boolean>(false)
+  const [isDeployed, setDeployed] = useState<boolean>(false)
+
+  useEffect(() => {
+    const isValid: boolean = contractAddress
+      ? ethers.utils.isAddress(contractAddress)
+      : false
+    setAddressValid(isValid)
+  }, [contractAddress])
+
+  const fetchData = () => {
+    if (contractAddress && isAddressValid) {
+      fetchABI(contractAddress, 'goerli').then((result) => setAbi(result))
+      fetchBytecode(contractAddress, 'goerli').then((result) =>
+        setBytecode(result),
+      )
+    }
+  }
+
+  const deployToKakarot = () => {
+
+  }
+
   return (
     <>
       <html lang="en"></html>
@@ -106,16 +134,15 @@ const AboutPage = () => {
                   searchable
                   //value={searchKeyword}
                   onChange={(e) => {
-                    console.log(e)
-                    // setSearchKeyword(e.target.value)
-                    // handleKeywordChange(e.target.value)
+                    setContractAddress(e.target.value)
                   }}
-                  placeholder={`Enter keyword...`}
+                  placeholder={`Enter address...`}
                   className="bg-gray-100 dark:bg-black-500 mt-4"
                 />
                 <Button
+                  disabled={!isAddressValid}
                   size="xs"
-                  onClick={console.log}
+                  onClick={fetchData}
                   className="mt-4 py-1 px-2 font-medium"
                 >
                   Fetch
@@ -124,17 +151,22 @@ const AboutPage = () => {
             </SectionWrapper>
             <SectionWrapper nbr={2} title="Deploy to Kakarot">
               <div>
-                <InfoBox title="Since" statusIcon="checkbox-circle-line">
-                  ABI fetched
-                </InfoBox>
-                <InfoBox title="Since" statusIcon="checkbox-circle-line">
-                  Bytecode fetched
-                </InfoBox>
+                {abi && (
+                  <InfoBox title="Since" statusIcon="checkbox-circle-line">
+                    ABI fetched
+                  </InfoBox>
+                )}
+                {byteCode && (
+                  <InfoBox title="Since" statusIcon="checkbox-circle-line">
+                    Bytecode fetched
+                  </InfoBox>
+                )}
               </div>
               <div>
                 <Button
+                  disabled={!abi || !byteCode}
                   size="xs"
-                  onClick={console.log}
+                  onClick={deployToKakarot}
                   className="mt-4 py-1 px-2 font-medium"
                 >
                   Deploy
@@ -143,7 +175,7 @@ const AboutPage = () => {
             </SectionWrapper>
             <SectionWrapper nbr={3} title="Test your contract on Kakarot">
               <div>
-                <H3 className="text-gray-600">Addresses</H3>
+                {/*<H3 className="text-gray-600">Addresses</H3>
                 <div className="flex flex-col text-sm mt-4 text-indigo-500">
                   <a
                     href={'http://google.com'}
@@ -159,10 +191,11 @@ const AboutPage = () => {
                   >
                     0x1234...5678
                   </a>
-                </div>
+                </div>*/}
               </div>
               <div>
                 <Button
+                  disabled={!isDeployed}
                   size="xs"
                   onClick={console.log}
                   className="mt-4 py-1 px-2 font-medium"

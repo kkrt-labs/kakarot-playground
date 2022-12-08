@@ -6,6 +6,8 @@ import { BigNumberish } from 'starknet/dist/utils/number'
 import { uint256ToBN } from 'starknet/dist/utils/uint256'
 import { IExecutionState } from 'types'
 
+import environment from '../environment'
+const { kakarotContract } = environment
 export const starknetSequencerProvider = new Provider({
   baseUrl: 'https://alpha4-2.starknet.io',
 })
@@ -36,9 +38,6 @@ const initialExecutionState = {
   returnValue: undefined,
 }
 
-const KAKAROT_ADDRESS =
-  '0x031ddf73d0285cc2f08bd4a2c93229f595f2f6e64b25846fc0957a2faa7ef7bb'
-
 export const CairoContext = React.createContext<ContextProps>({
   accountAddress: '',
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -59,14 +58,14 @@ export const CairoProvider = ({ children }: PropsWithChildren<{}>) => {
   const [executionState, setExecutionState] = useState<IExecutionState>(
     initialExecutionState,
   )
-  const [contractAddress] = useState<string>(KAKAROT_ADDRESS)
+  const [contractAddress] = useState<string>(kakarotContract)
 
   const [contract, setContract] = useState<Contract>()
 
   const [evmContractAddress, setEvmContractAddress] = useState<string>('')
 
   useEffect(() => {
-    starknetSequencerProvider.getCode(KAKAROT_ADDRESS).then((response) => {
+    starknetSequencerProvider.getCode(kakarotContract).then((response) => {
       if (
         response === undefined ||
         !Array.isArray(response?.abi) ||
