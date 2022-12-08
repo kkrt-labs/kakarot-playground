@@ -2,6 +2,7 @@ import React from 'react'
 
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import ReactTooltip from 'react-tooltip'
 
 import HomeLayout from 'components/layouts/Home'
 import { Button, Container, H1, H2, H3, Icon, Input } from 'components/ui'
@@ -44,11 +45,14 @@ const InfoBox: React.FC<InfoBoxProps> = ({ children, title, statusIcon }) => {
       <thead>
         <tr className="text-gray-500 uppercase text-xs">
           <td className="pt-3 px-4">{title}</td>
-          <td className="pt-3 px-4 text-end">
-            <Icon
-              name="links-line"
-              className="mr-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white cursor-pointer"
-            />
+          <td className="pt-3 px-4 text-end flex flex-row justify-end">
+            <div data-for="tooltip-copy" data-tip="copy">
+              <Icon
+                name="links-line"
+                className="mr-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white cursor-pointer"
+              />
+            </div>
+            <ReactTooltip id="tooltip-copy" effect="solid" />
             <Icon
               name={statusIcon}
               className="text-green-500 dark:text-green-500"
